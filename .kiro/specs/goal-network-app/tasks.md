@@ -31,8 +31,8 @@ requirements.md・design.md をもとに、Goal Network App の実装タスク�
     - `PrismaClient` のインポートは `'@prisma/client'` ではなく生成先の `'../generated/prisma/client'` から行う（`output` に合わせてパスを調整する）
     - _Requirements: 全体_
 
-- [ ] 3. 設定ファイルと共有スキーマの実装
-  - [ ] 3.1 `src/lib/scoring-config.ts` を作成し、`SCORING_CONFIG` 定数オブジェクトを定義する
+- [x] 3. 設定ファイルと共有スキーマの実装
+  - [x] 3.1 `src/lib/scoring-config.ts` を作成し、`SCORING_CONFIG` 定数オブジェクトを定義する
     - urgencyFactor: `{ overdue: 3.0, within7Days: 2.0, within30Days: 1.5, noDeadline: 1.0 }`
     - urgencyThresholds: `{ immediate: 7, near: 30 }`
     - crossGoalBonus: `{ oneGoal: 1.0, twoGoals: 1.1, threeOrMoreGoals: 1.2 }`
@@ -40,7 +40,7 @@ requirements.md・design.md をもとに、Goal Network App の実装タスク�
     - maxRecommendations: 3, maxCandidates: 10
     - `as const` で型推論が効くように定義する
     - _Requirements: 5.12_
-  - [ ] 3.2 `src/schemas/index.ts` を作成し、Zod スキーマをフロント・バック両用で定義する
+  - [x] 3.2 `src/schemas/index.ts` を作成し、Zod スキーマをフロント・バック両用で定義する
     - `GoalSchema`: title (min 1, max 100, trim後空白拒否), description (max 1000, optional), importance (HIGH/MEDIUM/LOW), deadline (date string, optional nullable), status (ACTIVE/ON_HOLD/COMPLETED, default ACTIVE)
     - `GoalRequirementSchema`: title (min 1, max 100, trim後空白拒否), description (max 500, optional), status
     - `ActionSchema`: title (min 1, max 100, trim後空白拒否), description (max 1000, optional), requiredMinutes (int, min 1, max 1440), deadline (optional nullable), actionType (TASK/HABIT), status
