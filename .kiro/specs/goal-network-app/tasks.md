@@ -10,7 +10,7 @@ requirements.md・design.md をもとに、Goal Network App の実装タスク�
 
 ## Tasks
 
-- [ ] 1. プロジェクトセットアップと依存パッケージの導入
+- [x] 1. プロジェクトセットアップと依存パッケージの導入
   - Next.js 15 (App Router) + TypeScript の新規プロジェクトを作成する
   - 以下のパッケージをインストールする: `prisma`, `@prisma/client`, `zod`, `@tanstack/react-query`, `@tanstack/react-query-devtools`, `fast-check`, `vitest`, `@vitejs/plugin-react`, `date-fns`, `date-fns-tz`
   - shadcn/ui を初期化し、使用するコンポーネント（button, input, select, dialog, toast, badge, card, form, label, textarea）を追加する
@@ -18,8 +18,8 @@ requirements.md・design.md をもとに、Goal Network App の実装タスク�
   - `src/app`, `src/lib`, `src/schemas`, `src/components`, `tests/unit`, `tests/property`, `tests/integration` のディレクトリ構造を作成する
   - _Requirements: 全体_
 
-- [ ] 2. Prisma スキーマ定義とDBマイグレーション
-  - [ ] 2.1 `prisma/schema.prisma` を作成し、以下のモデルとEnum をすべて定義する
+- [x] 2. Prisma スキーマ定義とDBマイグレーション
+  - [x] 2.1 `prisma/schema.prisma` を作成し、以下のモデルとEnum をすべて定義する
     - Enum: `Status` (ACTIVE/ON_HOLD/COMPLETED), `Importance` (HIGH/MEDIUM/LOW), `ContributionWeight` (HIGH/MEDIUM/LOW), `ActionType` (TASK/HABIT), `LinkTargetType` (GOAL/GOAL_REQUIREMENT)
     - Model: `Goal`, `GoalRequirement`, `Action`, `ActionLink`, `CompletionRecord`, `AvailableDailyTime`
     - `ActionLink` には `@@unique([actionId, goalId])` と `@@unique([actionId, goalRequirementId])` の複合ユニーク制約を設定する
@@ -27,7 +27,7 @@ requirements.md・design.md をもとに、Goal Network App の実装タスク�
     - `AvailableDailyTime.date` は `String` 型（"YYYY-MM-DD" 形式）、`@@unique([date])` を設定する
     - `generator client` は `provider = "prisma-client"` + `output = "../src/generated/prisma"` を使用する（`prisma-client-js` は将来削除予定のため使用しない）
     - _Requirements: 1, 2, 3, 4, 6, 8_
-  - [ ] 2.2 `prisma migrate dev --name init` を実行して初回マイグレーションを適用し、`src/lib/prisma.ts` に Prisma クライアントシングルトンを実装する
+  - [x] 2.2 `prisma migrate dev --name init` を実行して初回マイグレーションを適用し、`src/lib/prisma.ts` に Prisma クライアントシングルトンを実装する
     - `PrismaClient` のインポートは `'@prisma/client'` ではなく生成先の `'../generated/prisma/client'` から行う（`output` に合わせてパスを調整する）
     - _Requirements: 全体_
 

@@ -1,0 +1,122 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+// ── Enums ──────────────────────────────────────────────
+
+enum Status {
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+}
+
+enum Importance {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum ContributionWeight {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum ActionType {
+  TASK
+  HABIT
+}
+
+// ActionLink のターゲット種別（Goal か GoalRequirement か）
+enum LinkTargetType {
+  GOAL
+  GOAL_REQUIREMENT
+}
+
+// ── Models ─────────────────────────────────────────────
+
+model Goal {
+  id          Int        @id @default(autoincrement())
+  title       String // max 100 文字（アプリ側 Zod で検証）
+  description String? // max 1000 文字（任意）
+  importance  Importance
+  deadline    DateTime? // 日付のみ使用（時刻は無視）
+  status      Status     @default(ACTIVE)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  requirements GoalRequirement[]
+  actionLinks  ActionLink[] // targetType = GOAL のリンク
+}
+
+model GoalRequirement {
+  id          Int      @id @default(autoincrement())
+  goalId      Int
+  title       String // max 100 文字
+  description String? // max 500 文字（任意）
+  status      Status   @default(ACTIVE)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  goal        Goal         @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  actionLinks ActionLink[] // targetType = GOAL_REQUIREMENT のリンク
+}
+
+model Action {
+  id              Int        @id @default(autoincrement())
+  title           String // max 100 文字
+  description     String? // max 1000 文字（任意）
+  requiredMinutes Int // 1〜1440
+  deadline        DateTime?
+  actionType      ActionType
+  status          Status     @default(ACTIVE)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  actionLinks       ActionLink[]
+  completionRecords CompletionRecord[]
+}
+
+model ActionLink {
+  id                 Int                @id @default(autoincrement())
+  actionId           Int
+  targetType         LinkTargetType
+  goalId             Int? // targetType = GOAL の場合
+  goalRequirementId  Int? // targetType = GOAL_REQUIREMENT の場合
+  contributionWeight ContributionWeight
+  createdAt          DateTime           @default(now())
+
+  action          Action           @relation(fields: [actionId], references: [id], onDelete: Cascade)
+  goal            Goal?            @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  goalRequirement GoalRequirement? @relation(fields: [goalRequirementId], references: [id], onDelete: Cascade)
+
+  // 同一ペアの重複登録を防ぐ複合ユニーク制約
+  @@unique([actionId, goalId])
+  @@unique([actionId, goalRequirementId])
+}
+
+model CompletionRecord {
+  id          Int      @id @default(autoincrement())
+  actionId    Int
+  completedAt DateTime @default(now()) // UTC で保存。タイムゾーン変換はアプリ側で実施
+
+  action Action @relation(fields: [actionId], references: [id], onDelete: Cascade)
+}
+
+model AvailableDailyTime {
+  id               Int      @id @default(autoincrement())
+  date             String // "YYYY-MM-DD" 形式（ユーザーのローカルタイムゾーン基準）
+  availableMinutes Int // 1〜1440
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([date]) // UPSERT の一意キー
+}
