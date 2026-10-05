@@ -193,12 +193,12 @@ requirements.md・design.md をもとに、Goal Network App の実装タスク�
     - **Property 11: タイトルバリデーション（101文字以上の拒否）** — `fc.string({ minLength: 101 })` で101文字以上の文字列を生成し、各スキーマが reject することを検証する
     - **Validates: Requirements 1.3, 1.4, 2.4, 3.3**
 
-- [ ] 11. フロントエンド — 共通レイアウトと TanStack Query セットアップ
-  - [ ] 11.1 `src/app/layout.tsx` にグローバルレイアウトを実装し、TanStack Query の `QueryClientProvider` と shadcn/ui の `Toaster` を設定する
+- [x] 11. フロントエンド — 共通レイアウトと TanStack Query セットアップ
+  - [x] 11.1 `src/app/layout.tsx` にグローバルレイアウトを実装し、TanStack Query の `QueryClientProvider` と shadcn/ui の `Toaster` を設定する
     - ナビゲーションバー（ホーム・目標一覧・行動一覧 へのリンク）を実装する
     - Tailwind CSS のグローバルスタイルを設定する
     - _Requirements: 全体_
-  - [ ] 11.2 共通 hooks を `src/hooks/` に作成する
+  - [x] 11.2 共通 hooks を `src/hooks/` に作成する
     - `useGoals(status?)`, `useGoal(id)`, `useCreateGoal()`, `useUpdateGoal()`, `useDeleteGoal()` を TanStack Query で実装する
     - `useActions(status?, type?)`, `useAction(id)`, `useCreateAction()`, `useUpdateAction()`, `useDeleteAction()` を実装する
     - `useActionLinks(actionId)`, `useCreateActionLink()`, `useDeleteActionLink()` を実装する
@@ -207,49 +207,49 @@ requirements.md・design.md をもとに、Goal Network App の実装タスク�
     - `useRecommendations()` を実装する
     - _Requirements: 全体_
 
-- [ ] 12. フロントエンド — ホーム画面（推奨行動算出）
-  - [ ] 12.1 `src/app/page.tsx` にホーム画面を実装する
+- [x] 12. フロントエンド — ホーム画面（推奨行動算出）
+  - [x] 12.1 `src/app/page.tsx` にホーム画面を実装する
     - 利用可能時間入力フィールド（1〜1440 の整数、当日保存済み値を自動表示）とバリデーションエラー表示を実装する
     - 「推奨を取得」ボタンのクリックで `POST /api/recommendations` を呼び出す
     - 入力値の Zod バリデーション（空欄・範囲外・小数・非数値を拒否）をフォーム送信時に実行する
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_
-  - [ ] 12.2 `src/components/recommendations/RecommendationCard.tsx` を実装する
+  - [x] 12.2 `src/components/recommendations/RecommendationCard.tsx` を実装する
     - 推奨順位（バッジ）・タイトル・必要時間・PriorityScore・関連 Goal/GoalRequirement 一覧を表示する
     - 推奨理由テキストを表示する
     - 計算根拠（各 ActionLink の ImportanceWeight×ContributionWeight・Σ・CrossGoalBonus・UrgencyFactor・NormalizedDuration）をアコーディオン形式で表示する
     - 「完了にする」ボタンを実装し、クリックで `useCompleteAction` を呼び出す
     - _Requirements: 7.4, 7.5, 7.6, 8.1_
-  - [ ] 12.3 推奨結果の合計所要時間・残り時間表示と「条件を満たす行動がありません」メッセージを実装する
+  - [x] 12.3 推奨結果の合計所要時間・残り時間表示と「条件を満たす行動がありません」メッセージを実装する
     - _Requirements: 7.6, 7.7_
 
-- [ ] 13. フロントエンド — 目標一覧・詳細画面
-  - [ ] 13.1 `src/app/goals/page.tsx` に目標一覧画面を実装する
+- [x] 13. フロントエンド — 目標一覧・詳細画面
+  - [x] 13.1 `src/app/goals/page.tsx` に目標一覧画面を実装する
     - Status フィルタリング（Active/On Hold/Completed/全表示）を Select コンポーネントで実装する
     - Goal カード（タイトル・重要度バッジ・Status・期限・進捗率）を一覧表示する
     - 「新規作成」ボタンと Goal 作成フォームダイアログ（タイトル・説明・重要度・期限・Status）を実装する
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.10, 10.5_
-  - [ ] 13.2 `src/app/goals/[id]/page.tsx` に目標詳細画面を実装する
+  - [x] 13.2 `src/app/goals/[id]/page.tsx` に目標詳細画面を実装する
     - Goal の全フィールド表示・編集フォーム・削除ボタン（確認ダイアログ付き）を実装する
     - 進捗率（Task 型のみ対象、UNION DISTINCT 計算結果）をプログレスバーで表示する
     - Habit 型 Action の実行回数・最終実行日時を表示する
     - Status 変更セレクトを実装し、変更時に即時反映する
     - GoalRequirement 一覧（タイトル・Status・進捗率）と GoalRequirement 作成フォームを実装する
     - _Requirements: 1.5, 1.6, 1.7, 1.8, 1.9, 9.4, 9.5, 9.6_
-  - [ ] 13.3 `src/app/goals/[id]/requirements/[rid]/page.tsx` に目標要件詳細画面を実装する
+  - [x] 13.3 `src/app/goals/[id]/requirements/[rid]/page.tsx` に目標要件詳細画面を実装する
     - GoalRequirement の全フィールド表示・編集フォーム・削除ボタンを実装する
     - Task 型 Action の進捗率（`calcRequirementProgress` 結果）をプログレスバーで表示する
     - Habit 型 Action の実行回数・最終実行日時を表示する
     - Status 変更セレクトを実装する
     - _Requirements: 2.5, 2.6, 2.7, 2.8, 2.9, 9.1, 9.2, 9.3_
 
-- [ ] 14. フロントエンド — 行動一覧・詳細画面
-  - [ ] 14.1 `src/app/actions/page.tsx` に行動一覧画面を実装する
+- [x] 14. フロントエンド — 行動一覧・詳細画面
+  - [x] 14.1 `src/app/actions/page.tsx` に行動一覧画面を実装する
     - Status フィルタ・ActionType フィルタ（Task/Habit）を実装する
     - PriorityScore 降順で表示し、Action カード（タイトル・ActionType バッジ・Status・必要時間・PriorityScore・期限）を一覧表示する
     - 「完了にする」ボタンを各カードに実装する（手動選択: 要件11）
     - 「新規作成」ボタンと Action 作成フォームダイアログ（タイトル・説明・必要時間・期限・ActionType・Status）を実装する
     - _Requirements: 3.1, 3.2, 3.3, 3.8, 10.5, 11.1, 11.2, 11.3_
-  - [ ] 14.2 `src/app/actions/[id]/page.tsx` に行動詳細画面を実装する
+  - [x] 14.2 `src/app/actions/[id]/page.tsx` に行動詳細画面を実装する
     - Action の全フィールド表示・編集フォーム・削除ボタンを実装する
     - Status 変更セレクトを実装する
     - ActionLink 一覧（関連 Goal/GoalRequirement・貢献度）を表示し、ActionLink 追加モーダルと削除ボタンを実装する
@@ -257,7 +257,7 @@ requirements.md・design.md をもとに、Goal Network App の実装タスク�
     - CompletionRecord 一覧（完了日時、最新100件、新しい順）と「完了を取り消す」ボタンを実装する
     - _Requirements: 3.4, 3.5, 3.6, 3.7, 4.1, 4.2, 4.3, 4.3a, 4.4, 4.5, 4.7, 4.8, 8.4, 8.6_
 
-- [ ] 15. 最終チェックポイント — 全テストのパスと動作確認
+- [x] 15. 最終チェックポイント — 全テストのパスと動作確認
   - Ensure all tests pass, ask the user if questions arise.
 
 ---
